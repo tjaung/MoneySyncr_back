@@ -26,7 +26,7 @@ config = None
 if path.isfile(dotenv_file):
     config = dotenv.dotenv_values(dotenv_file)
 
-DEVELOPMENT_MODE = config['DEVELOPMENT_MODE']
+DEVELOPMENT_MODE = False #config['DEVELOPMENT_MODE']
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
