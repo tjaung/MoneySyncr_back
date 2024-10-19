@@ -56,9 +56,6 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['firstName', 'lastName', 
-                       'address', 'city',
-                       'state', 'zipCode',
-                       'phone',
                        'username',
                        'password']
 
