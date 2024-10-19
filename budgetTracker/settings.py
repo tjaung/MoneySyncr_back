@@ -22,11 +22,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # environment vars
 dotenv_file = BASE_DIR / '.env'
-config = None
-if path.isfile(dotenv_file):
-    config = dotenv.dotenv_values(dotenv_file)
+# config = None
+# if path.isfile(dotenv_file):
+#     config = dotenv.dotenv_values(dotenv_file)
+dotenv_file = BASE_DIR / '.env.local'
 
-DEVELOPMENT_MODE = False #config['DEVELOPMENT_MODE']
+if path.isfile(dotenv_file):
+    dotenv.load_dotenv(dotenv_file)
+
+DEVELOPMENT_MODE = getenv('DEVELOPMENT_MODE', 'False') == 'True'
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -106,10 +111,10 @@ if DEVELOPMENT_MODE is True:
         }
     }
 elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
-    if config['DATABASE_URL'] is None:
+    if getenv('DATABASE_URL') is None:
         raise Exception('DATABASE_URL environment variable not defined')
     DATABASES = {
-        'default': dj_database_url.parse(config['DATABASE_URL']),
+        'default': dj_database_url.parse(getenv('DATABASE_URL')),
     }
 
 
@@ -134,15 +139,15 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Email
 EMAIL_BACKEND = 'django_ses.SESBackend'
-DEFAULT_FROM_EMAIL = config['AWS_SES_FROM_EMAIL']
-AWS_SES_ACCESS_KEY_ID=config['AWS_SES_ACCESS_KEY_ID']
-AWS_SES_SECRET_ACCESS_KEY=config['AWS_SES_SECRET_ACCESS_KEY']
+DEFAULT_FROM_EMAIL = getenv('AWS_SES_FROM_EMAIL')
+AWS_SES_ACCESS_KEY_ID=getenv('AWS_SES_ACCESS_KEY_ID')
+AWS_SES_SECRET_ACCESS_KEY=getenv('AWS_SES_SECRET_ACCESS_KEY')
 USE_SES_V2 = True
 
-AWS_SES_REGION_ENDPOINT=f'email.us-{config['AWS_SES_REGION_NAME']}.amazonaws.com'
-AWS_SES_FROM_EMAIL = config['AWS_SES_FROM_EMAIL']
+AWS_SES_REGION_ENDPOINT=f'email.us-{getenv('AWS_SES_REGION_NAME')}.amazonaws.com'
+AWS_SES_FROM_EMAIL = getenv('AWS_SES_FROM_EMAIL')
 
-DOMAIN = config["DOMAIN"]
+DOMAIN = getenv("DOMAIN")
 SITE_NAME = 'MoneySyncr'
 
 # Internationalization
