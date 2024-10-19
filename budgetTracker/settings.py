@@ -106,16 +106,16 @@ WSGI_APPLICATION = 'budgetTracker.wsgi.application'
 
 if DEVELOPMENT_MODE is True:
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": path.join(BASE_DIR, "db.sqlite3"),
         }
     }
 elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
-    if getenv('DATABASE_URL') is None:
-        raise Exception('DATABASE_URL environment variable not defined')
+    if getenv("DATABASE_URL", None) is None:
+        raise Exception("DATABASE_URL environment variable not defined")
     DATABASES = {
-        'default': dj_database_url.parse(getenv('DATABASE_URL')),
+        "default": dj_database_url.parse(getenv("DATABASE_URL")),
     }
 
 
