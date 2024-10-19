@@ -7,7 +7,6 @@ from django.contrib.auth.models import (
 
 class UserAccountManager(BaseUserManager):
     def create_user(self, username, email=None, password=None, **kwargs):
-        print("Creating user with:", username, email, kwargs)  # Debug print
         if not username:
             raise ValueError('The Username field is required')
 
@@ -19,6 +18,7 @@ class UserAccountManager(BaseUserManager):
 
         user = self.model(
             email=email,
+            # username=username,  # Explicitly pass username
             **kwargs
         )
 
@@ -38,16 +38,15 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     firstName = models.CharField(max_length=255)
     lastName = models.CharField(max_length=255)
 
-    address = models.CharField(max_length=50)
-    city = models.CharField(max_length=50)
-    state = models.CharField(max_length=50)
-    zipCode = models.CharField(max_length=15)
+    address = models.CharField(max_length=50, blank=True, null=True)  # Optional
+    city = models.CharField(max_length=50, blank=True, null=True)  # Optional
+    state = models.CharField(max_length=50, blank=True, null=True)  # Optional
+    zipCode = models.CharField(max_length=15, blank=True, null=True)  # Optional
+    phone = models.CharField(max_length=15, blank=True, null=True)  # Optional
 
-    phone = models.CharField(max_length=15)
     email = models.EmailField(unique=True, max_length=255)
-
     username = models.CharField(max_length=50, unique=True)
-
+    password = models.CharField(max_length=50)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
@@ -55,9 +54,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     objects = UserAccountManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['firstName', 'lastName', 
-                       'username',
-                       'password']
+    REQUIRED_FIELDS = ['username', 'firstName', 'lastName', 'password']
 
     def __str__(self):
         return self.email
