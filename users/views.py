@@ -13,6 +13,7 @@ from rest_framework import status
     
 class CustomTokenObtainPairView(TokenObtainPairView):
     def post(self, request, *args, **kwargs):
+        print("Request Data:", request.data)
         response = super().post(request, *args, **kwargs)
 
         if response.status_code == 200:
