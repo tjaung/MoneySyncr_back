@@ -7,21 +7,30 @@ from rest_framework_simplejwt.views import (
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from .models import UserAccount
 # Create your views here.
 # overide jwt views
-    
-class CustomTokenObtainPairView(TokenObtainPairView):
+
+
+class CustomTokenObtainPairView(TokenObtainPairView):  
     def post(self, request, *args, **kwargs):
         print("Request Data:", request.data)
         response = super().post(request, *args, **kwargs)
-
+        print(request, response)
         if response.status_code == 200:
             access_token = response.data.get('access')
             refresh_token = response.data.get('refresh')
             print("Access Token:", access_token)
             print("Refresh Token:", refresh_token)
 
+            # Assuming you're also fetching the user for some logic
+            user_email = request.data.get('email')
+            user = UserAccount.objects.get(email=user_email)
+
+            # Accessing the new users_id field
+            print("User ID:", user.users_id)
             response.set_cookie(
                 'access',
                 access_token,

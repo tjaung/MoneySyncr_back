@@ -4,7 +4,7 @@ from django.contrib.auth.models import (
     AbstractBaseUser,
     PermissionsMixin
 )
-
+import uuid
 
 class UserAccountManager(BaseUserManager):
     def create_user(self, email, password=None, **kwargs):
@@ -39,10 +39,12 @@ class UserAccountManager(BaseUserManager):
 
 
 class UserAccount(AbstractBaseUser, PermissionsMixin):
+    users_id = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     email = models.EmailField(unique=True, max_length=255)
 
+    plaid_access_token = models.CharField(max_length=255, blank=True, null=True)  # Add this line   
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
@@ -54,3 +56,16 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+    
+    def __str__(self):
+        return self.email
+    
+    def getFullName(self):
+        return [self.first_name, self.last_name]
+    
+    def getID(self):
+        return self.id
+    
+    def getEmail(self):
+        return self.email
+    

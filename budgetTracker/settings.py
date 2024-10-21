@@ -22,14 +22,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # environment vars
 dotenv_file = BASE_DIR / '.env'
-# config = None
-# if path.isfile(dotenv_file):
-#     config = dotenv.dotenv_values(dotenv_file)
-dotenv_file = BASE_DIR / '.env.local'
 
 if path.isfile(dotenv_file):
     dotenv.load_dotenv(dotenv_file)
-
 DEVELOPMENT_MODE = getenv('DEVELOPMENT_MODE', 'False') == 'True'
 
 # Quick-start development settings - unsuitable for production
@@ -39,16 +34,37 @@ DEVELOPMENT_MODE = getenv('DEVELOPMENT_MODE', 'False') == 'True'
 SECRET_KEY = 'django-insecure-&=ijq=o8=v#*6*_3k^3idtz01082@n9mcjx)9_i!+qnylxj99)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = getenv('DEBUG', 'False') == 'True'
+# DEBUG = getenv('DEBUG', 'False') == 'True'
+DEBUG = True
 
 ALLOWED_HOSTS = getenv('DJANGO_ALLOWED_HOSTS',
                        '127.0.0.1,localhost').split(',')
 
 CORS_ALLOWED_ORIGINS = [
-    'https://localhost:3000',  # Example: frontend origin
+    'https://localhost:3000',
+    'http://localhost:3000', 
+    'http://127.0.0.1:3000',
+        # Example: frontend origin
+]
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
 ]
 
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "authorization",
+    "content-type",
+    "origin",
+    "x-csrftoken",
+    "x-requested-with",
+]
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = False  # Allow all origins (useful for development)
 
 #env("DJANGO_ALLOWED_HOSTS", '127.0.0.1:8000,localhost').split(',')
 
@@ -57,12 +73,14 @@ CORS_ALLOW_CREDENTIALS = True
 
 INSTALLED_APPS = [
     'users',
+    'banks',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "debug_toolbar",
     'rest_framework',
     'djoser',
     'corsheaders',
@@ -77,11 +95,16 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware'
+    'corsheaders.middleware.CorsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'budgetTracker.urls'
-
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
+]
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -145,7 +168,7 @@ AWS_SES_ACCESS_KEY_ID=getenv('AWS_SES_ACCESS_KEY_ID')
 AWS_SES_SECRET_ACCESS_KEY=getenv('AWS_SES_SECRET_ACCESS_KEY')
 USE_SES_V2 = True
 
-AWS_SES_REGION_ENDPOINT=f'email.us-{getenv('AWS_SES_REGION_NAME')}.amazonaws.com'
+AWS_SES_REGION_ENDPOINT=f'email.{getenv('AWS_SES_REGION_NAME')}.amazonaws.com'
 AWS_SES_FROM_EMAIL = getenv('AWS_SES_FROM_EMAIL')
 
 DOMAIN = getenv("DOMAIN")
@@ -209,7 +232,8 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'users.authentication.CustomJWTAuthentication'
-    ]
+    ],
+        "USER_ID_FIELD": "users_id",
 }
 
 AUTH_COOKIE = 'access'
@@ -219,7 +243,7 @@ AUTH_COOKIE_SECURE = False
 AUTH_COOKIE_HTTP_ONLY = True
 AUTH_COOKIE_PATH = '/'
 AUTH_COOKIE_SAMESITE = 'None' # cross origin
-
+AUTH_COOKIE_SECURE=False
 
 
 DJOSER = {
@@ -227,7 +251,7 @@ DJOSER = {
     #If True, you need to pass re_new_password to /users/reset_password_confirm/ endpoint in order to validate password equality.
     'SEND_ACTIVATION_EMAIL': True,
     'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
-    'ACTIVATION_URL': 'activate/{uid}/{token}',
+    'ACTIVATION_URL': 'activation/{uid}/{token}',
     #URL to your frontend activation page. It should contain {uid} and {token} placeholders, e.g. #/activate/{uid}/{token}. You should pass uid and token to activation endpoint.
     'USER_CREATE_PASSWORD_RETYPE': True,
     'PASSWORD_RESET_CONFIRM_RETYPE': True,
@@ -240,31 +264,5 @@ DJOSER = {
     },
 }
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': 'DEBUG',  # Change this to 'INFO' or 'ERROR' as needed
-        },
-        'djoser': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-    },
-}
-
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.UserAccount'
