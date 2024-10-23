@@ -1,0 +1,28 @@
+POST http://127.0.0.1:8000//api/users/
+Content-Type: application/json
+
+{
+    "first_name": "New",
+    "last_name": "User",
+    "email": "jaungt@gmail.com",
+    "password": "Password@111",
+    "re_password": "Password@111"
+}
+
+###
+
+POST http://127.0.0.1:8000/api/jwt/create/
+Content-Type: application/json
+
+{
+    "email":"jaungt@gmail.com",
+    "password": "Password@111"
+}
+
+###
+
+GET http://127.0.0.1:8000/api/users/me/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI5NTU5MDEwLCJpYXQiOjE3Mjk1NTg3MTAsImp0aSI6IjAxYmQ2OTRlNjdkZjQxZTU5YTllYTZjYmE1MWZkYThhIiwidXNlcl9pZCI6IjY0NjA0NzQzLTg2ZjQtNGFlYy1hMjQ1LTZmZGNhZTYzZTY5ZSJ9.P3j0zYRxje56QQY7xv4pWK-RdPWG6HB0RcCDRBXB_SE
+
+{
+}

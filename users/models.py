@@ -16,6 +16,7 @@ class UserAccountManager(BaseUserManager):
 
         user = self.model(
             email=email,
+            password=password,
             **kwargs
         )
 
@@ -36,6 +37,14 @@ class UserAccountManager(BaseUserManager):
         user.save(using=self._db)
 
         return user
+    
+    def authenticate(self, request, email=None, password=None, **kwargs):
+        try:
+            user = UserAccount.objects.get(email=email)
+            if user.check_password(password):
+                return user
+        except UserAccount.DoesNotExist:
+            return None
 
 
 class UserAccount(AbstractBaseUser, PermissionsMixin):
@@ -43,8 +52,14 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     email = models.EmailField(unique=True, max_length=255)
-
-    plaid_access_token = models.CharField(max_length=255, blank=True, null=True)  # Add this line   
+    password = models.CharField(max_length=255)
+    address1 = models.CharField(max_length=255)
+    city = models.CharField(max_length=255)
+    state = models.CharField(max_length=255)
+    postalCode = models.CharField(max_length=255)
+    dateOfBirth = models.CharField(max_length=255)
+    ssn = models.CharField(max_length=255)
+    # plaid_access_token = models.CharField(max_length=255, blank=True, null=True)  # Add this line   
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
@@ -52,20 +67,22 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     objects = UserAccountManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name']
+    REQUIRED_FIELDS = ['first_name', 'last_name',
+                       'address1', 'city',
+                       'state', 'postalCode',
+                       'dateOfBirth', 'ssn']
 
     def __str__(self):
         return self.email
     
-    def __str__(self):
-        return self.email
+    def check_password(self, raw_password):
+        return super().check_password(raw_password)
+    # def getFullName(self):
+    #     return [self.first_name, self.last_name]
     
-    def getFullName(self):
-        return [self.first_name, self.last_name]
+    # def getID(self):
+    #     return self.id
     
-    def getID(self):
-        return self.id
-    
-    def getEmail(self):
-        return self.email
-    
+    # def getEmail(self):
+    #     return self.email
+

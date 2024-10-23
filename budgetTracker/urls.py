@@ -22,7 +22,6 @@ from debug_toolbar.toolbar import debug_toolbar_urls
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('djoser.urls')),
-    path('api/', include('djoser.urls.jwt')),
+    # path('api/', include('djoser.urls.jwt')),
     path('api/', include('users.urls')),
-    path('api/', include('banks.urls'))
 ]+ debug_toolbar_urls()
