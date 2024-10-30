@@ -39,10 +39,11 @@ DEBUG = getenv('DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = getenv('DJANGO_ALLOWED_HOSTS',
                        '127.0.0.1,127.0.0.1:3000,localhost').split(',')
 
-CORS_ALLOWED_ORIGINS = [
-    'http://127.0.0.1:3000',
-    'http://localhost:3000'
-]
+CORS_ALLOWED_ORIGINS = getenv(
+    'CORS_ALLOWED_ORIGINS',
+    'http://localhost:3000,http://127.0.0.1:3000'
+).split(',')
+
 CORS_ALLOW_METHODS = [
     "DELETE",
     "GET",
@@ -61,10 +62,10 @@ CORS_ALLOW_HEADERS = [
     "x-requested-with",
     "credentials",
 ]
-CSRF_TRUSTED_ORIGINS = [
-    'http://127.0.0.1:3000',
-    'http://localhost:3000'
-]
+CSRF_TRUSTED_ORIGINS = getenv(
+    'CORS_ALLOWED_ORIGINS',
+    'http://localhost:3000,http://127.0.0.1:3000'
+).split(',')
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = True  # Allow all origins (useful for development)
