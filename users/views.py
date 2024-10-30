@@ -19,38 +19,6 @@ from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-@csrf_exempt
-def custom_login_view(request):
-    if request.method == 'POST':
-        # Extract email and password from POST request
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-
-        # Authenticate user using email and password
-        user = authenticate(request, email=email, password=password)
-        print('custom_login_authenticate', user)
-        
-        if user is not None:
-            # User is authenticated, so log them in
-            login(request, user)
-
-            # At this point, request.user.is_authenticated will be True
-            return JsonResponse({'message': 'Login successful', 'user': user.email})
-
-        else:
-            # Invalid credentials
-            return JsonResponse({'error': 'Invalid email or password'}, status=400)
-
-    return JsonResponse({'error': 'Invalid request method'}, status=405)
-from django.http import JsonResponse
-
-
-def is_authenticated_view(request):
-    if request.user.is_authenticated:
-        return JsonResponse({'message': 'User is authenticated', 'email': request.user.email})
-    else:
-        return JsonResponse({'message': 'User is not authenticated'}, status=401)
-    
 class CustomTokenObtainPairView(TokenObtainPairView):  
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)

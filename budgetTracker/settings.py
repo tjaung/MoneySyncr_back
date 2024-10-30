@@ -31,7 +31,7 @@ DEVELOPMENT_MODE = getenv('DEVELOPMENT_MODE', 'False') == 'True'
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-&=ijq=o8=v#*6*_3k^3idtz01082@n9mcjx)9_i!+qnylxj99)'
+SECRET_KEY = getenv('DJANGO_SECRET_KEY')#'django-insecure-&=ijq=o8=v#*6*_3k^3idtz01082@n9mcjx)9_i!+qnylxj99)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = getenv('DEBUG', 'False') == 'True'
@@ -44,7 +44,7 @@ CORS_ALLOWED_ORIGINS = [
     # 'https://localhost:3000',
     # 'http://127.0.0.1:3000', 
     'http://127.0.0.1:3000',
-    'http://127.0.0.1:8000'
+    'http://localhost:3000'
         # Example: frontend origin
 ]
 CORS_ALLOW_METHODS = [
@@ -67,13 +67,11 @@ CORS_ALLOW_HEADERS = [
 ]
 CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1:3000',
+    'http://localhost:3000'
 ]
-# CSRF_COOKIE_DOMAIN = 'localhost'
-# CORS_ORIGIN_WHITELIST = [
-#     'http://localhost:3000',  # Add your frontend domain here
-# ]
+
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_ALL_ORIGINS = False  # Allow all origins (useful for development)
+CORS_ALLOW_ALL_ORIGINS = True  # Allow all origins (useful for development)
 
 #env("DJANGO_ALLOWED_HOSTS", '127.0.0.1:8000,localhost').split(',')
 
@@ -170,7 +168,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-# AUTHENTICATION_BACKENDS = ['users.EmailAuthBackend', 'django.contrib.auth.backends.ModelBackend']
 
 # Email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -179,14 +176,7 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = getenv('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
-# EMAIL_BACKEND = 'django_ses.SESBackend'
-# DEFAULT_FROM_EMAIL = getenv('AWS_SES_FROM_EMAIL')
-# AWS_SES_ACCESS_KEY_ID=getenv('AWS_SES_ACCESS_KEY_ID')
-# AWS_SES_SECRET_ACCESS_KEY=getenv('AWS_SES_SECRET_ACCESS_KEY')
-# USE_SES_V2 = True
-# GOOGLE_API=AIzaSyB59USQ0A_hoB5nDQf3Z8B9X-QyAoLt3w8
-# AWS_SES_REGION_ENDPOINT=f'email.{getenv('AWS_SES_REGION_NAME')}.amazonaws.com'
-# AWS_SES_FROM_EMAIL = getenv('AWS_SES_FROM_EMAIL')
+
 
 DOMAIN = getenv("DOMAIN")
 SITE_NAME = 'MoneySyncr'
@@ -261,9 +251,6 @@ DJOSER = {
     'LOGOUT_ON_PASSWORD_CHANGE': True,
     'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': False,
     'TOKEN_MODEL': None,
-    # 'SERIALIZERS': {
-    #     'user_create': 'users.serializers.UserCreateSerializer',  # Pointing to your custom serializer
-    # },
 }
 
 
