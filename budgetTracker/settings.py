@@ -31,21 +31,17 @@ DEVELOPMENT_MODE = getenv('DEVELOPMENT_MODE', 'False') == 'True'
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = getenv('DJANGO_SECRET_KEY')#'django-insecure-&=ijq=o8=v#*6*_3k^3idtz01082@n9mcjx)9_i!+qnylxj99)'
+SECRET_KEY = getenv('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = getenv('DEBUG', 'False') == 'True'
-DEBUG = True
+DEBUG = getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = getenv('DJANGO_ALLOWED_HOSTS',
                        '127.0.0.1,127.0.0.1:3000,localhost').split(',')
 
 CORS_ALLOWED_ORIGINS = [
-    # 'https://localhost:3000',
-    # 'http://127.0.0.1:3000', 
     'http://127.0.0.1:3000',
     'http://localhost:3000'
-        # Example: frontend origin
 ]
 CORS_ALLOW_METHODS = [
     "DELETE",
@@ -73,11 +69,7 @@ CSRF_TRUSTED_ORIGINS = [
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = True  # Allow all origins (useful for development)
 
-#env("DJANGO_ALLOWED_HOSTS", '127.0.0.1:8000,localhost').split(',')
-
-
 # Application definition
-
 INSTALLED_APPS = [
     'users',
     'django.contrib.admin',
@@ -109,9 +101,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'budgetTracker.urls'
 INTERNAL_IPS = [
-    # ...
     "127.0.0.1",
-    # ...
 ]
 TEMPLATES = [
     {
@@ -232,7 +222,7 @@ REST_FRAMEWORK = {
 AUTH_COOKIE = 'access'
 AUTH_COOKIE_ACCESS_MAX_AGE = 60 * 5 # 5 min
 AUTH_COOKIE_REFRESH_MAX_AGE = 60 * 60 * 24 # 24 hours
-AUTH_COOKIE_SECURE = False #getenv('AUTH_COOKIE_SECURE', 'True') == 'True'
+AUTH_COOKIE_SECURE = getenv('AUTH_COOKIE_SECURE', 'True') == 'True'
 AUTH_COOKIE_HTTP_ONLY = True
 AUTH_COOKIE_PATH = '/'
 AUTH_COOKIE_SAMESITE = 'Lax' # cross origin
