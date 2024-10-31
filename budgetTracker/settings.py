@@ -68,7 +68,7 @@ CSRF_TRUSTED_ORIGINS = getenv(
 ).split(',')
 
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_ALL_ORIGINS = True  # Allow all origins (useful for development)
+# CORS_ALLOW_ALL_ORIGINS = True  # Allow all origins (useful for development)
 
 # Application definition
 INSTALLED_APPS = [

@@ -24,9 +24,6 @@ class CustomTokenObtainPairView(TokenObtainPairView):
         response = super().post(request, *args, **kwargs)
 
         if response.status_code == 200:
-            # authenticateUser = custom_login_view(request)
-            # print('jwt/create/ authenticate user: ', authenticateUser)
-            # print('isAuth', is_authenticated_view(request))
             access_token = response.data.get('access')
             refresh_token = response.data.get('refresh')
        
@@ -48,15 +45,11 @@ class CustomTokenObtainPairView(TokenObtainPairView):
                 httponly=settings.AUTH_COOKIE_HTTP_ONLY,
                 samesite=settings.AUTH_COOKIE_SAMESITE
             )
-        # out = {'response': response,
-        #        'cookies': response.COOKIES}
         return response
 
 
 
 class CustomTokenRefreshView(TokenRefreshView):
-    authentication_classes = [JWTAuthentication]  # Add authentication
-    permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
         refresh_token = request.COOKIES.get('refresh')
@@ -84,8 +77,6 @@ class CustomTokenRefreshView(TokenRefreshView):
 
 
 class CustomTokenVerifyView(TokenVerifyView):
-    authentication_classes = [JWTAuthentication]  # Add authentication
-    permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
         access_token = request.COOKIES.get('access')
