@@ -41,7 +41,7 @@ ALLOWED_HOSTS = getenv('DJANGO_ALLOWED_HOSTS',
 
 CORS_ALLOWED_ORIGINS = getenv(
     'CORS_ALLOWED_ORIGINS',
-    'http://localhost:3000,http://127.0.0.1:3000'
+    'http://localhost:3000,http://127.0.0.1:3000,https://moneysyncr-server-app-o2wcb.ondigitalocean.app'
 ).split(',')
 
 CORS_ALLOW_METHODS = [
@@ -68,7 +68,6 @@ CSRF_TRUSTED_ORIGINS = getenv(
 ).split(',')
 
 CORS_ALLOW_CREDENTIALS = True
-# CORS_ALLOW_ALL_ORIGINS = True  # Allow all origins (useful for development)
 
 # Application definition
 INSTALLED_APPS = [
