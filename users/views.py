@@ -15,10 +15,6 @@ from .models import UserAccount
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
-from django.contrib.auth import authenticate, login
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-
 class CustomTokenObtainPairView(TokenObtainPairView):  
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)

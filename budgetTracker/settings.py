@@ -221,7 +221,7 @@ AUTH_COOKIE_REFRESH_MAX_AGE = 60 * 60 * 24 # 24 hours
 AUTH_COOKIE_SECURE = getenv('AUTH_COOKIE_SECURE', 'True') == 'True'
 AUTH_COOKIE_HTTP_ONLY = True
 AUTH_COOKIE_PATH = '/'
-AUTH_COOKIE_SAMESITE = 'Lax' # cross origin
+AUTH_COOKIE_SAMESITE = 'None' # cross origin
 
 
 DJOSER = {
